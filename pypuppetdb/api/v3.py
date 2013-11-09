@@ -153,7 +153,7 @@ class API(BaseAPI):
             # Need to capitalize the resource type since PuppetDB doesn't
             # answer to lower case type names.
             # bugs.puppetlabs.com/some_value
-            type_ = type_.capitalize()
+            type_ = type_.title()
             if title is not None:
                 path = '{0}/{1}'.format(type_, title)
             elif title is None:
