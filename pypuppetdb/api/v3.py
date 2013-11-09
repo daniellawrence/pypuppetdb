@@ -32,7 +32,7 @@ class API(BaseAPI):
         nodes = self.nodes(name=name)
         return next(node for node in nodes)
 
-    def nodes(self, name=None, query=None, unreported=2, with_status=False):
+    def nodes(self, name=None, query=None, unreported=2, with_status=False, *args, **kwargs):
         """Query for nodes by either name or query. If both aren't
         provided this will return a list of all nodes. This method
         also fetches the nodes status and event counts of the latest
@@ -116,7 +116,7 @@ class API(BaseAPI):
                        unreported_time=node['unreported_time']
                        )
 
-    def facts(self, name=None, value=None, query=None):
+    def facts(self, name=None, value=None, query=None, *args, **kwargs):
         """Query for facts limited by either name, value and/or query.
         This will yield a single Fact object at a time."""
 
@@ -132,7 +132,7 @@ class API(BaseAPI):
             query = ''
             path = None
 
-        facts = self._query('facts', path=path, query=query)
+        facts = self._query('facts', path=path, query=query, *args, **kwargs)
         for fact in facts:
             yield Fact(
                 fact['certname'],
@@ -145,7 +145,7 @@ class API(BaseAPI):
 
         return self._query('fact-names')
 
-    def resources(self, type_=None, title=None, query=None):
+    def resources(self, type_=None, title=None, query=None, *args, **kwargs):
         """Query for resources limited by either type and/or title or query.
         This will yield a Resources object for every returned resource."""
 
@@ -165,7 +165,7 @@ class API(BaseAPI):
             query = ''
             path = None
 
-        resources = self._query('resources', path=path, query=query)
+        resources = self._query('resources', path=path, query=query, *args, **kwargs)
         for resource in resources:
             yield Resource(
                 resource['certname'],
@@ -178,13 +178,13 @@ class API(BaseAPI):
                 resource['parameters'],
                 )
 
-    def reports(self, query):
+    def reports(self, query, *args, **kwargs):
         """Get reports for our infrastructure. Currently reports can only
         be filtered through a query which requests a specific certname.
         If not it will return all reports.
 
         This yields a Report object for every returned report."""
-        reports = self._query('reports', query=query)
+        reports = self._query('reports', query=query, *args, **kwargs)
         for report in reports:
             yield Report(
                 report['certname'],
@@ -198,12 +198,12 @@ class API(BaseAPI):
                 report['transaction-uuid']
                 )
 
-    def events(self, query):
+    def events(self, query, *args, **kwargs):
         """A report is made up of events. This allows to query for events
         based on the reprt hash.
         This yields an Event object for every returned event."""
 
-        events = self._query('events', query=query)
+        events = self._query('events', query=query, *args, **kwargs)
         for event in events:
             yield Event(
                 event['certname'],

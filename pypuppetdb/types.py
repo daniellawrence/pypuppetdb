@@ -275,20 +275,20 @@ class Node(object):
         facts = self.__api.facts(name=name, query=self.__query_scope)
         return next(fact for fact in facts)
 
-    def resources(self, type_=None):
+    def resources(self, type_=None, *args, **kwargs):
         """Get all resources of this node or all resources of the specified
         type."""
         if type_ is None:
-            resources = self.__api.resources(query=self.__query_scope)
+            resources = self.__api.resources(query=self.__query_scope, *args, **kwargs)
         else:
             resources = self.__api.resources(type_=type_,
-                                             query=self.__query_scope)
+                                             query=self.__query_scope, *args, **kwargs)
         return resources
 
-    def resource(self, type_, title):
+    def resource(self, type_, title, *args, **kwargs):
         """Get a resource matching the supplied type and title."""
         resources = self.__api.resources(type_=type_, title=title,
-                                         query=self.__query_scope)
+                                         query=self.__query_scope, *args, **kwargs)
         return next(resource for resource in resources)
 
     def reports(self):
